@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Leika Generator</title>
+		<script src="https://unpkg.com/exif-js@2.3.0/exif.js" async></script>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<script src="./index.js"></script>
+		<h1>小米12S Ultra 徕卡定制水印生成</h1>
+		<div class="text">在此处上传带有EXIF信息的照片以生成带有徕卡定制水印的图片</div>
+		<div class="input">
+			<input type="file" id="fileInput" />
+		</div>
+		<button id="saveImageBtn">保存图片</button>
+		<canvas id="canvas"></canvas>
+	</body>
+</html>
