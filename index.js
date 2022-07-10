@@ -11,13 +11,7 @@
 			img.addEventListener('load', () => {
 				const canvas = document.querySelector('canvas#canvas');
 				const ctx = canvas.getContext('2d');
-				EXIF.getData(img, async function () {
-					const MiSansRegular = new FontFace('MiSans', 'url(./fonts/MiSans-Regular.woff2)');
-					await MiSansRegular.load();
-					document.fonts.add(MiSansRegular);
-					const MiSansBold = new FontFace('MiSans', 'url(./fonts/MiSans-Bold.woff2)', { weight: 'bold' });
-					await MiSansBold.load();
-					document.fonts.add(MiSansBold);
+				EXIF.getData(img, function () {
 					const tags = EXIF.getAllTags(this);
 					console.log(tags);
 
