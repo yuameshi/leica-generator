@@ -26,7 +26,11 @@
 					ctx.drawImage(img, 0, 0);
 
 					const deviceNameStr = `${tags.Make} ${tags.Model}`;
-					const detailStr = `f/${tags.FNumber} ${reductionTo(tags.ExposureTime?.numerator, tags.ExposureTime?.denominator).join('/')} ISO${tags.ISOSpeedRatings}`;
+					const detailStr = `f/${tags.FNumber} 1/${Math.round(tags.ExposureTime?.denominator / tags.ExposureTime?.numerator)} ISO${tags.ISOSpeedRatings}`;
+					let gps;
+					if (tags.GPSLatitude && tags.GPSLongitude) {
+						gps = `${tags.GPSLatitude[0]}°${tags.GPSLatitude[1]}′${Math.round(tags.GPSLatitude[2])}″${tags.GPSLatitudeRef || ''}  ${tags.GPSLongitude[0]}°${tags.GPSLongitude[1]}′${Math.round(tags.GPSLongitude[2])}″${tags.GPSLongitudeRef || ''}`;
+					}
 
 					(function drawDeviceName(deviceName) {
 						ctx.fillStyle = '#000';
@@ -43,11 +47,6 @@
 						ctx.textAlign = 'right';
 						ctx.fillText(detailStr, img.width - textAreaHeight * 0.3, img.height + textAreaHeight * 0.3);
 					})(detailStr);
-
-					let gps;
-					if (tags.GPSLatitude && tags.GPSLongitude) {
-						gps = `${tags.GPSLatitude[0]}°${tags.GPSLatitude[1]}′${tags.GPSLatitude[2]}″${tags.GPSLatitudeRef || ''}  ${tags.GPSLongitude[0]}°${tags.GPSLongitude[1]}′${tags.GPSLongitude[2]}″${tags.GPSLongitudeRef || ''}`;
-					}
 
 					(function drawTimeAndGps(timeStr, gpsStr) {
 						ctx.fillStyle = '#737373';
@@ -98,30 +97,3 @@
 		fileReader.readAsDataURL(file);
 	});
 });
-function reductionTo(m, n) {
-	function isInteger(obj) {
-		return obj % 1 === 0;
-	}
-	let arr = [];
-	if (!isInteger(m) || !isInteger(n)) {
-		return [1];
-	} else if (m <= 0 || n <= 0) {
-		return [1];
-	}
-	let a = m;
-	let b = n;
-	a >= b ? ((a = m), (b = n)) : ((a = n), (b = m));
-	if (m != 1 && n != 1) {
-		for (let i = b; i >= 2; i--) {
-			if (m % i == 0 && n % i == 0) {
-				m = m / i;
-				n = n / i;
-			}
-		}
-	}
-	arr[0] = m;
-	if (n !== 1) {
-		arr[1] = n;
-	}
-	return arr;
-}
