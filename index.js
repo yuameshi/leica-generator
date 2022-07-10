@@ -26,10 +26,14 @@
 					ctx.drawImage(img, 0, 0);
 
 					const deviceNameStr = `${tags.Make} ${tags.Model}`;
-					const detailStr = `f/${tags.FNumber} 1/${Math.round(tags.ExposureTime?.denominator / tags.ExposureTime?.numerator)} ISO${tags.ISOSpeedRatings}`;
+					const detailStr = `f/${tags.FNumber} ${
+						tags.ExposureTime?.numerator > tags.ExposureTime?.denominator ? (Math.round(tags.ExposureTime?.numerator / tags.ExposureTime?.denominator) * 10) / 10 : `1/${Math.round(tags.ExposureTime?.denominator / tags.ExposureTime?.numerator)}`
+					} ISO${tags.ISOSpeedRatings}`;
 					let gps;
 					if (tags.GPSLatitude && tags.GPSLongitude) {
-						gps = `${tags.GPSLatitude[0]}°${tags.GPSLatitude[1]}′${Math.round(tags.GPSLatitude[2])}″${tags.GPSLatitudeRef || ''}  ${tags.GPSLongitude[0]}°${tags.GPSLongitude[1]}′${Math.round(tags.GPSLongitude[2])}″${tags.GPSLongitudeRef || ''}`;
+						gps = `${tags.GPSLatitude[0]}°${tags.GPSLatitude[1]}′${Math.round(tags.GPSLatitude[2])}″${tags.GPSLatitudeRef || ''}  ${tags.GPSLongitude[0]}°${tags.GPSLongitude[1]}′${Math.round(tags.GPSLongitude[2])}″${
+							tags.GPSLongitudeRef || ''
+						}`;
 					}
 
 					(function drawDeviceName(deviceName) {
