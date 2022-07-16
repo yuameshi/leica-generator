@@ -29,6 +29,13 @@
 					const detailStr = `f/${tags.FNumber} ${
 						tags.ExposureTime?.numerator > tags.ExposureTime?.denominator ? (Math.round(tags.ExposureTime?.numerator / tags.ExposureTime?.denominator) * 10) / 10 : `1/${Math.round(tags.ExposureTime?.denominator / tags.ExposureTime?.numerator)}`
 					} ISO${tags.ISOSpeedRatings}`;
+					let timeStr = tags.DateTimeOriginal || tags.DateTimeDigitized || tags.DateTime;
+					try {
+						timeStr = `${timeStr.split(' ')[0].replace(/:/g, '.')} ${timeStr.split(' ')[1]}`;
+					} catch (e) {
+						alert('您的照片的EXIF信息的时间部分可能有些问题或不规范');
+					}
+
 					let gps;
 					if (tags.GPSLatitude && tags.GPSLongitude) {
 						gps = `${tags.GPSLatitude[0]}°${tags.GPSLatitude[1]}′${Math.round(tags.GPSLatitude[2])}″${tags.GPSLatitudeRef || ''}  ${tags.GPSLongitude[0]}°${tags.GPSLongitude[1]}′${Math.round(tags.GPSLongitude[2])}″${
@@ -64,7 +71,7 @@
 						} else {
 							ctx.fillText(timeStr, img.width - textAreaHeight * 0.3, img.height + textAreaHeight * 0.55);
 						}
-					})(tags.DateTimeOriginal || tags.DateTime || tags.DateTimeDigitized, gps);
+					})(timeStr, gps);
 
 					(function drawDividingLine() {
 						ctx.fillStyle = '#d3d3d3';
@@ -73,7 +80,7 @@
 						ctx.font = `bold ${textAreaHeight * 0.2}px 'MiSans'`;
 						const detailWidth = ctx.measureText(detailStr).width;
 						ctx.font = `bold ${textAreaHeight * 0.17}px 'MiSans'`;
-						const timeWidth = ctx.measureText(gps || tags.DateTimeOriginal || tags.DateTime || tags.DateTimeDigitized).width;
+						const timeWidth = ctx.measureText(gps || timeStr).width;
 						ctx.fillRect(img.width - Math.max(detailWidth, timeWidth) - img.width * 0.04, img.height + textAreaHeight * 0.28, img.width * -0.0025, textAreaHeight * 0.425);
 					})();
 
@@ -84,7 +91,7 @@
 							ctx.font = `bold ${textAreaHeight * 0.2}px 'MiSans'`;
 							const detailWidth = ctx.measureText(detailStr).width;
 							ctx.font = `bold ${textAreaHeight * 0.17}px 'MiSans'`;
-							const timeWidth = ctx.measureText(gps || tags.DateTimeOriginal || tags.DateTime || tags.DateTimeDigitized).width;
+							const timeWidth = ctx.measureText(gps || timeStr).width;
 							ctx.drawImage(imgLeika, img.width - Math.max(detailWidth, timeWidth) - img.width * 0.05 - textAreaHeight * 0.425, img.height + textAreaHeight * 0.28, textAreaHeight * 0.425, textAreaHeight * 0.425);
 						});
 					})();
