@@ -1,4 +1,4 @@
-﻿window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	document.querySelector('#fileInput').addEventListener('change', (e) => {
 		let fileReader = new FileReader();
 		let file = e.target.files[0];
