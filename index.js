@@ -90,34 +90,14 @@ window.addEventListener('DOMContentLoaded', () => {
 				})();
 
 				document.querySelector('#saveImageBtn').addEventListener('click', () => {
-					// console.log(piexif.load(e.target.result))
-					// let zeroth = {};
-					// let exif = {};
-					// let gps = {};
-					// zeroth[piexif.ImageIFD.Make] = tags.Make || 'Leica Generator';
-					// zeroth[piexif.ImageIFD.Model] = tags.Model || 'Leica Generator';
-					// zeroth[piexif.ImageIFD.XResolution] = [img.width, 1];
-					// zeroth[piexif.ImageIFD.YResolution] = [img.height + textAreaHeight, 1];
-					// zeroth[piexif.ImageIFD.ProcessingSoftware] = 'Leica Generator by Yuameshi';
-					// zeroth[piexif.ImageIFD.DateTime] = `${timeObj?.getFullYear()}:${timeObj?.getMonth()}:${timeObj?.getDate()} ${timeObj?.getHours()}:${timeObj?.getMinutes()}:${timeObj?.getSeconds()}`;
-					// zeroth[piexif.ImageIFD.Software] = 'Leica Generator by Yuameshi';
-					// exif[piexif.ExifIFD.FNumber] = tags.FNumber;
-					// exif[piexif.ExifIFD.ExposureTime] = tags.ExposureTime;
-					// exif[piexif.ExifIFD.ISOSpeedRatings] = tags.ISO;
-					// exif[piexif.ExifIFD.DateTimeOriginal] = `${timeObj?.getFullYear()}:${timeObj?.getMonth()}:${timeObj?.getDate()} ${timeObj?.getHours()}:${timeObj?.getMinutes()}:${timeObj?.getSeconds()}`;
-					// gps[piexif.GPSIFD.GPSVersionID] = tags.GPSVersionID.split('.');
-					// gps[piexif.GPSIFD.GPSLatitudeRef] = tags.GPSLatitudeRef;
-					// gps[piexif.GPSIFD.GPSLatitude] = tags.GPSLatitude;
-					// gps[piexif.GPSIFD.GPSLongitudeRef] = tags.GPSLongitudeRef;
-					// gps[piexif.GPSIFD.GPSLongitude] = tags.GPSLongitude;
-					// gps[piexif.GPSIFD.GPSTimeStamp] = tags.GPSTimeStamp;
-					// let exifObj = { '0th': zeroth, Exif: exif, GPS: gps };
-					// console.log(exifObj)
-					// let exifStr = piexif.dump(exifObj);
+					let exifData = piexif.load(e.target.result);
+					exifData['0th'][piexif.ImageIFD.ProcessingSoftware] = 'Leica Generator by Yuameshi';
+					exifData['0th'][piexif.ImageIFD.Software] = 'Leica Generator by Yuameshi';
+					let exifStr = piexif.dump(exifData);
 					const a = document.createElement('a');
-					a.href = canvas.toDataURL('image/jpeg');
-					// a.href = piexif.insert(exifStr, canvas.toDataURL('image/jpeg'));
-					a.download = `${file.name}-Leica.png`;
+					// a.href = canvas.toDataURL('image/jpeg');
+					a.href = piexif.insert(exifStr, canvas.toDataURL('image/jpeg', 1));
+					a.download = `${file.name}-Leica.jpg`;
 					a.click();
 				});
 			});
