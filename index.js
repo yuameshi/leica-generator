@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		console.log(tags);
 		fileReader.addEventListener('loadend', async (e) => {
 			const img = new Image();
-			img.src = /jpg|png|tif|tiff|heic/.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target.result : await exifr.thumbnailUrl(file);
+			img.src = /jpg|jpeg|gif|png|tif|tiff|heic/.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target.result : await exifr.thumbnailUrl(file);
 			if (img.src == undefined) {
 				alert('不受支持的图片格式!');
 			}
