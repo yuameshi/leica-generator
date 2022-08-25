@@ -10,8 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		console.log(tags);
 		fileReader.addEventListener('loadend', async (e) => {
 			const img = new Image();
-			img.src = /jpg|jpeg|gif|png|tif|tiff|heic/.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target.result : await exifr.thumbnailUrl(file);
-			if (img.src == undefined) {
+			img.src = /jpg|jpeg|gif|png|tif|tiff|heic/i.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target.result : await exifr.thumbnailUrl(file);
+			if (img.src == 'undefined') {
 				alert('不受支持的图片格式!');
 			}
 			window.a = e.target.result;
@@ -77,15 +77,40 @@ window.addEventListener('DOMContentLoaded', () => {
 					ctx.fillRect(img.width - Math.max(detailWidth, timeWidth) - img.width * 0.04, img.height + textAreaHeight * 0.28, img.width * -0.0025, textAreaHeight * 0.425);
 				})();
 
-				(function drawLeika() {
-					const imgLeika = new Image();
-					imgLeika.src = './leica.svg';
-					imgLeika.addEventListener('load', () => {
+				(function drawLogo() {
+					const imgLogo = new Image();
+					let src = './icons/leica.svg';
+					switch (tags.Make) {
+						case 'SONY':
+							src = './icons/Sony.svg';
+							break;
+						case 'Canon':
+							src = './icons/Canon.svg';
+							break;
+						case 'NIKON CORPORATION':
+							src = './icons/Nikon_2003.svg';
+							break;
+						case 'FUJIFILM':
+							src = './icons/Fujifilm_2006.svg';
+							break;
+						case 'Panasonic':
+							src = './icons/Panasonic.svg';
+							break;
+						case 'OM Digital Solutions':
+							src = './icons/Olympus_Corporation_logo.svg';
+							break;
+						default:
+							break;
+					}
+					imgLogo.src = src;
+					imgLogo.addEventListener('load', () => {
 						ctx.font = `bold ${textAreaHeight * 0.2}px 'MiSans'`;
 						const detailWidth = ctx.measureText(detailStr).width;
 						ctx.font = `bold ${textAreaHeight * 0.17}px 'MiSans'`;
 						const timeWidth = ctx.measureText(gps || timeStr).width;
-						ctx.drawImage(imgLeika, img.width - Math.max(detailWidth, timeWidth) - img.width * 0.05 - textAreaHeight * 0.425, img.height + textAreaHeight * 0.28, textAreaHeight * 0.425, textAreaHeight * 0.425);
+						const logoHeight = textAreaHeight * 0.425;
+						const logoWidth = logoHeight * (imgLogo.width / imgLogo.height);
+						ctx.drawImage(imgLogo, img.width - Math.max(detailWidth, timeWidth) - img.width * 0.05 - logoWidth, img.height + textAreaHeight * 0.28, logoWidth, logoHeight);
 					});
 				})();
 
