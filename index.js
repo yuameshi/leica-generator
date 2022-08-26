@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					const detailWidth = ctx.measureText(detailStr).width;
 					ctx.font = `bold ${textAreaHeight * 0.17}px 'MiSans'`;
 					const timeWidth = ctx.measureText(gps || timeStr).width;
-					ctx.fillRect(img.width - Math.max(detailWidth, timeWidth) - img.width * 0.04, img.height + textAreaHeight * 0.28, img.width * -0.0025, textAreaHeight * 0.425);
+					ctx.fillRect(img.width - Math.max(detailWidth, timeWidth) - textAreaHeight * 0.3 - img.width * 0.01, img.height + textAreaHeight * 0.28, img.width * -0.0025, textAreaHeight * 0.425);
 				})();
 
 				(function drawLogo() {
@@ -110,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						const timeWidth = ctx.measureText(gps || timeStr).width;
 						const logoHeight = textAreaHeight * 0.425;
 						const logoWidth = logoHeight * (imgLogo.width / imgLogo.height);
-						ctx.drawImage(imgLogo, img.width - Math.max(detailWidth, timeWidth) - img.width * 0.05 - logoWidth, img.height + textAreaHeight * 0.28, logoWidth, logoHeight);
+						ctx.drawImage(imgLogo, img.width - Math.max(detailWidth, timeWidth) - textAreaHeight * 0.3 - img.width * 0.02 - logoWidth, img.height + textAreaHeight * 0.28, logoWidth, logoHeight);
 					});
 				})();
 
