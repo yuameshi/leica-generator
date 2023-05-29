@@ -1,0 +1,1 @@
+body{height:100vh;width:100vw;display:flex;flex-direction:column;align-items:center;overflow-x:hidden}canvas#canvas{max-height:90vh;max-width:100%;object-fit:contain;border:10px #000 solid;margin:20px 0}
