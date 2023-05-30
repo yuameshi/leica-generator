@@ -14,17 +14,12 @@ export default defineConfig({
 			targets: { ie: '11' },
 		}),
 	],
-	base: '/',
+	base: './',
 	build: {
-		assetsDir: './assets/',
-		outDir: './dist/',
 		emptyOutDir: true,
-		sourcemap: false,
 		modulePreload: {
 			polyfill: true,
 		},
 		cssCodeSplit: true,
 	},
 });
-
-
