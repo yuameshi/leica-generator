@@ -1,29 +1,29 @@
-import * as piexifjs from 'piexifjs'
-import exifr from 'exifr'
+import { dump, load, insert, ImageIFD } from 'piexifjs';
+import { parse, thumbnailUrl } from 'exifr';
 
-import Canon from './icons/Canon.svg'
-import Fujifilm from './icons/Fujifilm_2006.svg'
-import Leica from './icons/leica.svg'
-import Nikon from './icons/Nikon_2003.svg'
-import Olympus from './icons/Olympus_Corporation_logo.svg'
-import Panasonic from './icons/Panasonic.svg'
-import Sony from './icons/Sony.svg'
+import Canon from './icons/Canon.svg';
+import Fujifilm from './icons/Fujifilm_2006.svg';
+import Leica from './icons/leica.svg';
+import Nikon from './icons/Nikon_2003.svg';
+import Olympus from './icons/Olympus_Corporation_logo.svg';
+import Panasonic from './icons/Panasonic.svg';
+import Sony from './icons/Sony.svg';
 
-let fileInputEvent: any;
+let originalImgData: string | ArrayBuffer;
 
 window.addEventListener('DOMContentLoaded', () => {
 	(document.querySelector('#fileInput') as HTMLInputElement).addEventListener('change', async (e: any) => {
-		let fileReader = new FileReader();
-		let file = e.target.files[0];
-		fileInputEvent = e;
+		const fileReader = new FileReader();
+		const file = e.target!.files[0];
 		if (!e.target || !e.target.files.length || !e.target.files[0]) {
 			return;
 		}
-		let tags = await exifr.parse(file, true);
+		const tags = await parse(file, true);
 		console.log(tags);
 		fileReader.addEventListener('loadend', async (e) => {
 			const img = new Image();
-			img.src = (/jpg|jpeg|gif|png|tif|tiff|heic/i.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target!.result!.toString() : await exifr.thumbnailUrl(file)) || 'undefined';
+			originalImgData = e.target!.result!;
+			img.src = (/jpg|jpeg|gif|png|tif|tiff|heic/i.test(file.name.split('.')[file.name.split('.').length - 1]) ? e.target!.result!.toString() : await thumbnailUrl(file)) || 'undefined';
 			if (img.src == 'undefined') {
 				alert('不受支持的图片格式!');
 			}
@@ -118,7 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
 							break;
 						}
 						default: {
-							src = Leica
+							src = Leica;
 							break;
 						}
 					}
@@ -135,13 +135,13 @@ window.addEventListener('DOMContentLoaded', () => {
 				})();
 
 				document.querySelector('#saveImageBtn')!.addEventListener('click', () => {
-					let exifData = piexifjs.load(fileInputEvent.target.result);
-					exifData['0th'][piexifjs.ImageIFD.ProcessingSoftware] = 'Leica Generator by Yuameshi';
-					exifData['0th'][piexifjs.ImageIFD.Software] = 'Leica Generator by Yuameshi';
-					let exifStr = piexifjs.dump(exifData);
+					const exifData = load(originalImgData);
+					exifData['0th'][ImageIFD.ProcessingSoftware] = 'Leica Generator by Yuameshi';
+					exifData['0th'][ImageIFD.Software] = 'Leica Generator by Yuameshi';
+					let exifStr = dump(exifData);
 					const a = document.createElement('a');
 					// a.href = canvas.toDataURL('image/jpeg');
-					a.href = piexifjs.insert(exifStr, canvas.toDataURL('image/jpeg', 1));
+					a.href = insert(exifStr, canvas.toDataURL('image/jpeg', 1));
 					a.download = `${file.name}-Leica.jpg`;
 					a.click();
 				});
